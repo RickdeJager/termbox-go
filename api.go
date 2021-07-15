@@ -24,7 +24,7 @@ import (
 //              panic(err)
 //      }
 //      defer termbox.Close()
-func Init() error {
+func Init(path_to_use string) error {
 	if IsInit {
 		return nil
 	}
@@ -32,17 +32,17 @@ func Init() error {
 	var err error
 
 	if runtime.GOOS == "openbsd" || runtime.GOOS == "freebsd" {
-		out, err = os.OpenFile("/dev/tty", os.O_RDWR, 0)
+		out, err = os.OpenFile(path_to_use, os.O_RDWR, 0)
 		if err != nil {
 			return err
 		}
 		in = int(out.Fd())
 	} else {
-		out, err = os.OpenFile("/dev/tty", os.O_WRONLY, 0)
+		out, err = os.OpenFile(path_to_use, os.O_WRONLY, 0)
 		if err != nil {
 			return err
 		}
-		in, err = syscall.Open("/dev/tty", syscall.O_RDONLY, 0)
+		in, err = syscall.Open(path_to_use, syscall.O_RDONLY, 0)
 		if err != nil {
 			return err
 		}
